@@ -8,9 +8,25 @@
 import SwiftUI
 import Firebase
 import FirebaseAuth
+import FirebaseDatabase
 
 struct TenantView: View {
     @State private var isPresenting = false
+    @State var entrances = [Dictionary <String, AnyObject>()]
+    
+    func fetchData() {
+        Database.database()
+            .reference()
+            .child("Entrances")
+            .observe(DataEventType.childAdded) {
+                (snapshot) in
+                if let entrance = snapshot.value as? [String: AnyObject] {
+                    self.entrances.append(entrance)
+                    print("Data")
+                }
+            }
+    }
+    
     var body: some View {
         //Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
         
@@ -23,7 +39,24 @@ struct TenantView: View {
                     }
                 })
                 .navigationBarBackButtonHidden()
+                .buttonBorderShape(.roundedRectangle)
+                .buttonStyle(.bordered)
+                .background(.red)
+                .foregroundStyle(.white)
+                .clipShape(.rect(cornerRadius: 7))
+                .padding()
+                
+                Spacer()
+                
+                NavigationLink("New Entrance", destination: NewEntranceView())
+                    .buttonStyle(.bordered)
+                    .background(.green)
+                    .foregroundStyle(.white)
+                    .buttonBorderShape(.roundedRectangle)
+                    .clipShape(.rect(cornerRadius: 7))
+                    .padding()
             }
+            Spacer()
         }
     }
 }
