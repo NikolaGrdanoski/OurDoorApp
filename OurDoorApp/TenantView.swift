@@ -12,23 +12,23 @@ import FirebaseDatabase
 
 struct TenantView: View {
     @State private var isPresenting = false
-    @State var entrances = [Dictionary <String, AnyObject>()]
+    @State var entrances: [String] = []
     
     func fetchData() {
         Database.database()
             .reference()
-            .child("Entrances")
+            .child("entrances")
             .observe(DataEventType.childAdded) {
                 (snapshot) in
-                if let entrance = snapshot.value as? [String: AnyObject] {
-                    self.entrances.append(entrance)
+                if let entrance = snapshot.value as? [String] {
+                    self.entrances.append(contentsOf: entrance)
                     print("Data")
                 }
             }
     }
     
     var body: some View {
-        //Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        //Text("Hello, World!")
         
         NavigationStack {
             HStack {
@@ -57,6 +57,11 @@ struct TenantView: View {
                     .padding()
             }
             Spacer()
+            
+            ForEach(entrances, id: \.self) {
+                entrance in Text(entrance)
+            }
+            .onAppear(perform: fetchData)
         }
     }
 }
