@@ -28,9 +28,7 @@ struct NewEntranceView: View {
             .textFieldStyle(.roundedBorder)
             .padding()
             
-            NavigationLink(destination: TenantView(), label: {
-                Button("Select address") {}
-            })
+            NavigationLink("Select address", destination: AddressSelectMapView())
             .foregroundStyle(.white)
             .background(.purple)
             .buttonBorderShape(.roundedRectangle)
