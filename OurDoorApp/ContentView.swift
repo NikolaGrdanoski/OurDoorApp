@@ -15,6 +15,7 @@ struct ContentView: View {
     @State private var password: String = ""
     @State var isPresenting = false
     @State var userIsSignedIn = false
+    @State var alertDisplay = false
     
     var body: some View {
         /*VStack {
@@ -52,12 +53,16 @@ struct ContentView: View {
                         print("in sign in")
                         if error != nil {
                             print("Alert")
+                            alertDisplay = true
                         }
                         else {
                             print("Log in")
                             userIsSignedIn = true
                         }
                     }
+                }
+                .alert(isPresented: $alertDisplay) {
+                    Alert(title: Text("Alert"), message: Text("Invalid credentials"), dismissButton: .default(Text("Fine")))
                 }
             })
             .foregroundStyle(.white)
