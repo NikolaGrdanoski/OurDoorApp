@@ -12,16 +12,17 @@ import FirebaseDatabase
 
 struct TenantView: View {
     @State private var isPresenting = false
-    @State var entrances: [String] = []
+    @State var entrances = [Dictionary <String, AnyObject>()]
     
     func fetchData() {
+        print("Yeah")
         Database.database()
             .reference()
             .child("entrances")
             .observe(DataEventType.childAdded) {
                 (snapshot) in
-                if let entrance = snapshot.value as? [String] {
-                    self.entrances.append(contentsOf: entrance)
+                if let entrance = snapshot.value as? [String: AnyObject] {
+                    self.entrances.append(entrance)
                     print("Data")
                 }
             }
@@ -57,11 +58,6 @@ struct TenantView: View {
                     .padding()
             }
             Spacer()
-            
-            ForEach(entrances, id: \.self) {
-                entrance in Text(entrance)
-            }
-            .onAppear(perform: fetchData)
         }
     }
 }
